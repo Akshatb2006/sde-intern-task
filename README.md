@@ -54,7 +54,7 @@ A minimal starter is provided in `api/` and `web/`. It boots and serves `/api/he
 - [ ] Per-survey branding: primary color + logo (URL is fine; upload is a stretch)
 - [ ] Shareable public URL — survey renders in the owner's brand, no login required to respond
 - [ ] Anonymous response submission persisted server-side
-- [ ] Owner dashboard: list own surveys, view responses (a table is fine)
+- [ ] Owner dashboard: list own surveys, view responses (how you present them is up to you)
 
 ## Stretch (impressive, not required)
 
@@ -107,7 +107,7 @@ pnpm install        # installs api, web, and root devDeps in one pass
 pnpm dev            # runs api (:8787) and web (:5173) together, output prefixed [api]/[web]
 ```
 
-Open http://localhost:5173 — you should see a hello-world page. `/api/health` (proxied through Vite) returns `{ "status": "ok" }`. From there, it's your project.
+Open http://localhost:5173 — you should see the starter placeholder page pointing back to this README. `/api/health` (proxied through Vite) returns `{ "status": "ok" }`. From there, it's your project.
 
 Other useful scripts (from the root):
 
