@@ -3,14 +3,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "wrangler d1 migrations apply DB --local && wrangler dev",
+    "db:migrate": "wrangler d1 migrations apply DB --local",
     "deploy": "wrangler deploy",
     "cf-typegen": "wrangler types",
     "postinstall": "wrangler types",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "hono": "^4.12.22"
+    "hono": "^4.12.22",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",

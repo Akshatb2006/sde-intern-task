@@ -6,21 +6,24 @@
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true
-  }
+  },
 
-  // Add bindings here as you need them, then run `pnpm cf-typegen` to refresh `Env` types.
-  //
-  // Examples:
-  //
-  // "d1_databases": [
-  //   { "binding": "DB", "database_name": "survey-builder", "database_id": "<id>" }
-  // ],
-  //
-  // "kv_namespaces": [
-  //   { "binding": "SESSIONS", "id": "<id>" }
-  // ],
-  //
-  // "r2_buckets": [
-  //   { "binding": "ASSETS", "bucket_name": "survey-builder-assets" }
-  // ]
+  // Survey data is relational (survey -> questions -> responses -> answers),
+  // so D1 (SQLite) is the right fit over KV/R2. The database_id below is a
+  // placeholder that local dev ignores — `wrangler dev`/migrations use a local
+  // SQLite file under .wrangler. To deploy, run `wrangler d1 create` and paste
+  // the real id here.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "survey-builder",
+      "database_id": "local-dev-placeholder",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  // SESSION_SECRET signs the auth cookie (HMAC). Set a real one for production
+  // with `wrangler secret put SESSION_SECRET`. Local dev falls back to a
+  // hard-coded dev secret (see src/auth.ts) so a fresh clone just works.
+  "vars": {}
 }
