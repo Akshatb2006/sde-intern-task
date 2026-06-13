@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* App-wide defaults. The slate/indigo palette is the builder chrome; each
+   public survey overrides its own accent at runtime via the --brand var. */
+:root {
+  --brand: #6366f1;
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Anything inside a [data-brand] subtree resolves `brand-*` utilities against
+   the survey's own color. See web/src/lib/brand.ts. */
+@theme inline {
+  --color-brand: var(--brand);
+}

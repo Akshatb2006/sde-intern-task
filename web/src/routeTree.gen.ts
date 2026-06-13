@@ -9,38 +9,130 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as SSurveyIdRouteImport } from './routes/s.$surveyId'
+import { Route as AppSurveysSurveyIdResponsesRouteImport } from './routes/app.surveys.$surveyId.responses'
+import { Route as AppSurveysSurveyIdEditRouteImport } from './routes/app.surveys.$surveyId.edit'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const SSurveyIdRoute = SSurveyIdRouteImport.update({
+  id: '/s/$surveyId',
+  path: '/s/$surveyId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppSurveysSurveyIdResponsesRoute =
+  AppSurveysSurveyIdResponsesRouteImport.update({
+    id: '/surveys/$surveyId/responses',
+    path: '/surveys/$surveyId/responses',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppSurveysSurveyIdEditRoute = AppSurveysSurveyIdEditRouteImport.update({
+  id: '/surveys/$surveyId/edit',
+  path: '/surveys/$surveyId/edit',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/login': typeof LoginRoute
+  '/s/$surveyId': typeof SSurveyIdRoute
+  '/app/': typeof AppIndexRoute
+  '/app/surveys/$surveyId/edit': typeof AppSurveysSurveyIdEditRoute
+  '/app/surveys/$surveyId/responses': typeof AppSurveysSurveyIdResponsesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/s/$surveyId': typeof SSurveyIdRoute
+  '/app': typeof AppIndexRoute
+  '/app/surveys/$surveyId/edit': typeof AppSurveysSurveyIdEditRoute
+  '/app/surveys/$surveyId/responses': typeof AppSurveysSurveyIdResponsesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/login': typeof LoginRoute
+  '/s/$surveyId': typeof SSurveyIdRoute
+  '/app/': typeof AppIndexRoute
+  '/app/surveys/$surveyId/edit': typeof AppSurveysSurveyIdEditRoute
+  '/app/surveys/$surveyId/responses': typeof AppSurveysSurveyIdResponsesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/login'
+    | '/s/$surveyId'
+    | '/app/'
+    | '/app/surveys/$surveyId/edit'
+    | '/app/surveys/$surveyId/responses'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/s/$surveyId'
+    | '/app'
+    | '/app/surveys/$surveyId/edit'
+    | '/app/surveys/$surveyId/responses'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/login'
+    | '/s/$surveyId'
+    | '/app/'
+    | '/app/surveys/$surveyId/edit'
+    | '/app/surveys/$surveyId/responses'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  SSurveyIdRoute: typeof SSurveyIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +140,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/s/$surveyId': {
+      id: '/s/$surveyId'
+      path: '/s/$surveyId'
+      fullPath: '/s/$surveyId'
+      preLoaderRoute: typeof SSurveyIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/surveys/$surveyId/responses': {
+      id: '/app/surveys/$surveyId/responses'
+      path: '/surveys/$surveyId/responses'
+      fullPath: '/app/surveys/$surveyId/responses'
+      preLoaderRoute: typeof AppSurveysSurveyIdResponsesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/surveys/$surveyId/edit': {
+      id: '/app/surveys/$surveyId/edit'
+      path: '/surveys/$surveyId/edit'
+      fullPath: '/app/surveys/$surveyId/edit'
+      preLoaderRoute: typeof AppSurveysSurveyIdEditRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+  AppSurveysSurveyIdEditRoute: typeof AppSurveysSurveyIdEditRoute
+  AppSurveysSurveyIdResponsesRoute: typeof AppSurveysSurveyIdResponsesRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+  AppSurveysSurveyIdEditRoute: AppSurveysSurveyIdEditRoute,
+  AppSurveysSurveyIdResponsesRoute: AppSurveysSurveyIdResponsesRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  LoginRoute: LoginRoute,
+  SSurveyIdRoute: SSurveyIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

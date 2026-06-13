@@ -1,16 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { ensureUser } from '../lib/queries'
 
+// The root path is just a router: signed-in users land on the dashboard,
+// everyone else on the login screen.
 export const Route = createFileRoute('/')({
-  component: Home,
+  beforeLoad: async ({ context }) => {
+    const user = await ensureUser(context.queryClient)
+    throw redirect({ to: user ? '/app' : '/login' })
+  },
 })
-
-function Home() {
-  return (
-    <main style={{ padding: 24, fontFamily: 'system-ui, sans-serif' }}>
-      <h1>Survey Builder — starter</h1>
-      <p>
-        Replace this with the app. See <code>README.md</code> at the repo root.
-      </p>
-    </main>
-  )
-}
